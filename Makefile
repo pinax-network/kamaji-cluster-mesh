@@ -1,16 +1,20 @@
 .DEFAULT_GOAL := help
 
-## Setup the kind management cluster
-kind:
-	./setup/kind-cluster.sh
+## Setup the kind cluster
+setup:
+	./test/kind-cluster.sh
 
-## Bootstrap the management cluster with FluxCD
-flux:
-	./setup/flux-bootstrap.sh
+## Bootstrap a management cluster with Cilium CNI and FluxCD
+up: 
+	tilt up
 
-## Nuke the management cluster
+## Uninstall the management cluster components
+down:
+	tilt down
+
+## Nuke the kind cluster
 nuke: 
-	./setup/kind-teardown.sh
+	./test/kind-teardown.sh
 
 # From: https://gist.github.com/klmr/575726c7e05d8780505a
 help:

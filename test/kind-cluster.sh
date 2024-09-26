@@ -2,21 +2,19 @@
 
 set -o errexit
 
-KIND_CLUSTER_NAME="${KIND_CLUSTER_NAME:-management}"
+KIND_CLUSTER_NAME="${KIND_CLUSTER_NAME:-kind}"
 
 cat <<EOF | kind create cluster --name "${KIND_CLUSTER_NAME}" --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
+  image: kindest/node:v1.30.4@sha256:976ea815844d5fa93be213437e3ff5754cd599b040946b5cca43ca45c2047114
   extraPortMappings:
   - containerPort: 32000
     hostPort: 32000
 networking:
+  ipFamily: dual
   disableDefaultCNI: true
   kubeProxyMode: "none"
 EOF
-
-cilium install --set cluster.name="$KIND_CLUSTER_NAME" --set cluster.id=1 --context kind-"$KIND_CLUSTER_NAME"
-cilium clustermesh enable --context kind-"$KIND_CLUSTER_NAME" --service-type NodePort
-cilium status --wait

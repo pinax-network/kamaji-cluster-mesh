@@ -1,0 +1,49 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: capi-operator
+spec:
+  interval: 12h
+  url: https://kubernetes-sigs.github.io/cluster-api-operator
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: capi-operator
+spec:
+  dependsOn:
+    - name: cert-manager
+      namespace: cert-manager
+  interval: 1h
+  chart:
+    spec:
+      chart: cluster-api-operator
+      version: "0.13.0"
+      sourceRef:
+        kind: HelmRepository
+        name: capi-operator
+      interval: 12h
+  install:
+    createNamespace: true
+    remediation:
+      retries: -1
+  upgrade:
+    remediation:
+      retries: -1
+  driftDetection:
+    mode: enabled
+    ignore:
+      - paths:
+          - /spec/conversion/webhook/clientConfig/caBundle
+        target:
+          kind: CustomResourceDefinition
+  values:
+    core: capi-system:cluster-api:v1.7.6
+    bootstrap: capi-kubeadm-bootstrap-system:kubeadm:v1.7.6
+    controlPlane: capi-kamaji-control-plane-system:kamaji:v0.10.2
+    infrastructure: capk-system:kubevirt:v0.1.7
+    manager:
+      featureGates:
+        core:
+          ClusterTopology: true

@@ -20,6 +20,7 @@
             k9s
             kind
             kubectl
+            tilt
             yq
           ];
         };

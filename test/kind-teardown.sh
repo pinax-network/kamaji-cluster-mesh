@@ -2,8 +2,7 @@
 
 set -o errexit
 
-# desired cluster name; default is "kind"
-KIND_CLUSTER_NAME="${KIND_CLUSTER_NAME:-management}"
+KIND_CLUSTER_NAME="${KIND_CLUSTER_NAME:-kind}"
 
 echo "> Deleting Management cluster..."
 kind delete cluster --name="$KIND_CLUSTER_NAME"

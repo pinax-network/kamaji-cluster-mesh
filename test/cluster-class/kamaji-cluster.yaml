@@ -1,0 +1,52 @@
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: ClusterClass
+metadata:
+  name: capi-quickstart-clusterclass
+  namespace: default
+spec:
+  # Define the Cluster template with references to ControlPlane and Infrastructure templates
+  clusterTemplate:
+    metadata:
+      labels:
+        cluster.x-k8s.io/managed-by: kamaji
+    spec:
+      clusterNetwork:
+        pods:
+          cidrBlocks:
+            - 10.96.100.0/24
+        services:
+          cidrBlocks:
+            - 10.96.0.0/16
+      controlPlaneRef:
+        kind: KamajiControlPlane
+        apiVersion: controlplane.cluster.x-k8s.io/v1alpha1
+        name: capi-quickstart-kubevirt
+      infrastructureRef:
+        kind: KubevirtCluster
+        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+        name: capi-quickstart
+
+  # Define ControlPlane and Infrastructure templates to be referenced in the Cluster
+  controlPlane:
+    ref:
+      kind: KamajiControlPlaneTemplate
+      apiVersion: controlplane.cluster.x-k8s.io/v1alpha1
+      name: kamaji-controlplane-template
+
+  infrastructure:
+    ref:
+      kind: KubevirtClusterTemplate
+      apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+      name: kubevirt-cluster-template
+
+  # Define the MachineDeployments to be used in the ClusterClass
+  worker:
+    machineDeployments:
+      - class: md-0
+        name: capi-quickstart-md-0
+        template:
+          metadata:
+            labels:
+              cluster.x-k8s.io/deployment-name: capi-quickstart-md-0
+          spec:
+            replicas: 3

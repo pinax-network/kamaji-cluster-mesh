@@ -1,0 +1,19 @@
+---
+apiVersion: cilium.io/v2alpha1
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: default
+spec:
+  blocks:
+    - cidr: 172.200.0.0/24
+    - cidr: fd12:3456:789a:1::/64
+---
+apiVersion: cilium.io/v2alpha1
+kind: CiliumL2AnnouncementPolicy
+metadata:
+  name: default
+spec:
+  loadBalancerIPs: true
+  nodeSelector:
+    matchLabels:
+      kubernetes.io/os: linux
