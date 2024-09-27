@@ -29,40 +29,68 @@ will most likely not match the one used in the Nix environment.
 
 ## Getting Started
 
-1. Clone the repository:
+### 1. Clone the repository
 
-   ```bash
-   git clone https://github.com/pinax-network/kamaji-cluster-mesh.git
-   cd kamaji-cluster-mesh
-   ```
+```bash
+git clone https://github.com/pinax-network/kamaji-cluster-mesh.git
+cd kamaji-cluster-mesh
+```
 
-2. Enter the Nix development environment:
+### 2. Enter the Nix development environment
 
-   ```bash
-   nix develop
-   ```
+```bash
+nix develop
+```
 
-3. Bootstrap the management cluster
+### 3. Setup the environment variables for bootstrap
 
-   This repository contains a [Tiltfile](https://tilt.dev/) that is used for local
-   development. To build a local k8s cluster with kind run:
+Since this demo uses fluxCD to bootstrap the management cluster, you will
+need to configure some environment variables before bootstrapping.
 
-   ```bash
-   make setup
-   ```
+To bootstrap Flux, the person running the command must have cluster admin
+rights for the target Kubernetes cluster. It is also required that the
+person running the command to be the owner of the GitHub repository, or
+to have admin rights of a GitHub organization.
 
-   To bring up a tilt development environment run `tilt up` or:
+If you don't have the required access permission to this repo, you will have to
+change the [flux bootstrap script](test/flux-bootstrap.sh) to use your
+own GitHub Repo instead.
 
-   ```bash
-   make up
-   ```
+For accessing the GitHub API, the bootstrap command requires a GitHub personal
+access token (PAT) with administration permissions.
 
-   Once the management cluster is up and ready, you can create workloads clusters
-   with `kamaji` and the `kubevirt` by leveraging the `cluster-api-operator`. Workload
-   clusters are located in the `test/workload-clusters` directory.
+The GitHub PAT can be exported as an environment variable:
 
-   To bootstrap the quickstart-cluster on the management cluster run:
+```bash
+export GITHUB_TOKEN=<gh-token>
+```
 
-   ```bash
-   kubectl apply -f ./test/workload-clusters/quickstart-cluster.yaml
-   ```
+Alternatively, you can use `sops` to encrypt a GitHub PAT token
+in this repo and point the [flux bootstrap script](test/flux-bootstrap.sh)
+to it. If the `GITHUB_TOKEN` variable is not set, the bootstrap script
+will try to decrypt the secret using sops automatically.
+
+### 4. Bootstrap the management cluster
+
+This repository contains a [Tiltfile](https://tilt.dev/) that is used for local
+development. To build a local k8s cluster with kind run:
+
+```bash
+make setup
+```
+
+To bring up a tilt development environment run `tilt up` or:
+
+```bash
+make up
+```
+
+Once the management cluster is up and ready, you can create workloads clusters
+with `kamaji` and the `kubevirt` by leveraging the `cluster-api-operator`. Workload
+clusters are located in the `test/workload-clusters` directory.
+
+To bootstrap the quickstart-cluster on the management cluster run:
+
+```bash
+kubectl apply -f ./test/workload-clusters/quickstart-cluster.yaml
+```

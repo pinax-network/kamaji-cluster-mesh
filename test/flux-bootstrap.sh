@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 
+set -o errexit
+
 GITHUB_OWNER=pinax-network
 GITHUB_REPOSITORY=kamaji-cluster-mesh
 GITHUB_BRANCH=main
 
-# Export the GitHub token for flux bootstrap
-GITHUB_TOKEN=$(sops -d ./test/github_token)
-export GITHUB_TOKEN
+# Check if GITHUB_TOKEN is already set; if not, use sops to decrypt it
+if [ -z "$GITHUB_TOKEN" ]; then
+    GITHUB_TOKEN=$(sops -d ./secrets/github_token)
+    export GITHUB_TOKEN
+fi
 
 # Bootstrapping the staging cluster using a GitHub PAT
 flux bootstrap github \
