@@ -39,11 +39,11 @@ spec:
         target:
           kind: CustomResourceDefinition
   values:
-    core: capi-system:cluster-api:v1.7.6
-    bootstrap: capi-kubeadm-bootstrap-system:kubeadm:v1.7.6
-    controlPlane: capi-kamaji-control-plane-system:kamaji:v0.10.2
-    infrastructure: capk-system:kubevirt:v0.1.7
-    addon: "helm"
+    core: capi-system:cluster-api:v1.8.3
+    bootstrap: capi-kubeadm-bootstrap-system:kubeadm:v1.8.3
+    controlPlane: capi-kamaji-control-plane-system:kamaji:v0.11.0
+    infrastructure: capk-system:kubevirt:v0.1.9
+    addon: "helm-addon-system:helm:v0.2.5"
     manager:
       featureGates:
         core:

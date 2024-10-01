@@ -12,35 +12,11 @@ spec:
   chartName: cilium
   namespace: kube-system
   valuesTemplate: |
-    # General configuration for the Cilium Helm chart.
-    bpf:
-      masquerade: true
-    cluster:
-      name: kubevirt
-    endpointRoutes:
-      enabled: true
-    enableCiliumEndpointSlice: true
-    ingressController:
-      enabled: true
-      loadBalancerMode: shared
-    gatewayAPI:
-      enabled: false
-    l7Proxy: true
-    l2announcements:
-      enabled: false
-    ipv4NativeRoutingCIDR: 172.142.0.0/16
     ipam:
       mode: "cluster-pool"
       operator:
-        clusterPoolIPv4PodCIDRList:
-          - "172.169.0.0/16"
-        clusterPoolIPv4MaskSize: 24
-
-    kubeProxyReplacement: true
-    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-    k8sServiceHost: 127.0.0.1
-    k8sServicePort: 6443
-    localRedirectPolicy: true
+        clusterPoolIPv4PodCIDRList:{{range $i, $cidr := .Cluster.spec.clusterNetwork.pods.cidrBlocks }}
+          - {{ $cidr }}{{end}}
     operator:
       replicas: 1
       rollOutPods: true

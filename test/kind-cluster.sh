@@ -12,7 +12,7 @@ nodes:
   image: kindest/node:v1.30.4@sha256:976ea815844d5fa93be213437e3ff5754cd599b040946b5cca43ca45c2047114
   extraMounts:
    - containerPath: /var/lib/kubelet/config.json
-     hostPath: /home/guillaume/.docker/config.json
+     hostPath: $HOME/.docker/config.json
 networking:
   disableDefaultCNI: true
   kubeProxyMode: "none"
