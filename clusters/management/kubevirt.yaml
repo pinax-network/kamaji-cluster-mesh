@@ -2,17 +2,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: capi-operator
+  name: kubevirt
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: kamaji
-    - name: kubevirt
   interval: 5m
   retryInterval: 30s
   timeout: 4m
+  path: ./test/kubevirt
   wait: true
-  path: ./test/capi-operator
   prune: true
   sourceRef:
     kind: GitRepository
