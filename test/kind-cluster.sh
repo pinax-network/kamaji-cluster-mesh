@@ -10,9 +10,9 @@ apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
   image: kindest/node:v1.30.4@sha256:976ea815844d5fa93be213437e3ff5754cd599b040946b5cca43ca45c2047114
-  extraPortMappings:
-  - containerPort: 32000
-    hostPort: 32000
+  extraMounts:
+   - containerPath: /var/lib/kubelet/config.json
+     hostPath: ~/.docker/config.json
 networking:
   disableDefaultCNI: true
   kubeProxyMode: "none"

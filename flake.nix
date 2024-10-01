@@ -21,6 +21,7 @@
             kind
             kubectl
             kubernetes-helm
+            kubevirt
             tilt
             yq
           ];
