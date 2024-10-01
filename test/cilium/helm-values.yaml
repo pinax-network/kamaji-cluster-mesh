@@ -15,12 +15,12 @@ gatewayAPI:
 l7Proxy: true
 l2announcements:
   enabled: true
-ipv4NativeRoutingCIDR: 172.100.0.0/16
+ipv4NativeRoutingCIDR: 172.42.0.0/16
 ipam:
   mode: "cluster-pool"
   operator:
     clusterPoolIPv4PodCIDRList:
-      - "172.101.0.0/16"
+      - "172.69.0.0/16"
     clusterPoolIPv4MaskSize: 24
     # clusterPoolIPv6PodCIDRList:
     #   - "fd00::/104"

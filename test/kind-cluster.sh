@@ -14,7 +14,6 @@ nodes:
   - containerPort: 32000
     hostPort: 32000
 networking:
-  ipFamily: dual
   disableDefaultCNI: true
   kubeProxyMode: "none"
 EOF

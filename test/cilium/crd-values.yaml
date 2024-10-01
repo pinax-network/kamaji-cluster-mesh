@@ -5,8 +5,7 @@ metadata:
   name: default
 spec:
   blocks:
-    - cidr: 172.200.0.0/24
-    - cidr: fd12:3456:789a:1::/64
+    - cidr: 172.18.200.0/24
 ---
 apiVersion: cilium.io/v2alpha1
 kind: CiliumL2AnnouncementPolicy
