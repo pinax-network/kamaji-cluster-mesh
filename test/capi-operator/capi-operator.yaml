@@ -43,6 +43,7 @@ spec:
     bootstrap: capi-kubeadm-bootstrap-system:kubeadm:v1.7.6
     controlPlane: capi-kamaji-control-plane-system:kamaji:v0.10.2
     infrastructure: capk-system:kubevirt:v0.1.7
+    addon: "helm"
     manager:
       featureGates:
         core:
