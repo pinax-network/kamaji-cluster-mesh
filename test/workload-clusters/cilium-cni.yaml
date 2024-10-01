@@ -1,0 +1,68 @@
+apiVersion: addons.cluster.x-k8s.io/v1alpha1
+kind: HelmChartProxy
+metadata:
+  name: cilium-cni
+spec:
+  clusterSelector:
+    # Target workload clusters with specific labels.
+    matchLabels:
+      ciliumCNI: enabled
+  releaseName: cilium
+  repoURL: https://helm.cilium.io/
+  chartName: cilium
+  namespace: kube-system
+  valuesTemplate: |
+    # General configuration for the Cilium Helm chart.
+    bpf:
+      masquerade: true
+    cluster:
+      name: kubevirt
+    endpointRoutes:
+      enabled: true
+    enableCiliumEndpointSlice: true
+    ingressController:
+      enabled: true
+      loadBalancerMode: shared
+    gatewayAPI:
+      enabled: false
+    l7Proxy: true
+    l2announcements:
+      enabled: false
+    ipv4NativeRoutingCIDR: 172.142.0.0/16
+    ipam:
+      mode: "cluster-pool"
+      operator:
+        clusterPoolIPv4PodCIDRList:
+          - "172.169.0.0/16"
+        clusterPoolIPv4MaskSize: 24
+
+    kubeProxyReplacement: true
+    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+    k8sServiceHost: 127.0.0.1
+    k8sServicePort: 6443
+    localRedirectPolicy: true
+    operator:
+      replicas: 1
+      rollOutPods: true
+    rollOutCiliumPods: true
+    securityContext:
+      privileged: true
+      capabilities:
+        ciliumAgent:
+          - PERFMON
+          - BPF
+          - CHOWN
+          - KILL
+          - NET_ADMIN
+          - NET_RAW
+          - IPC_LOCK
+          - SYS_ADMIN
+          - SYS_RESOURCE
+          - DAC_OVERRIDE
+          - FOWNER
+          - SETGID
+          - SETUI
+        cleanCiliumState:
+          - NET_ADMIN
+          - SYS_ADMIN
+          - SYS_RESOURCE

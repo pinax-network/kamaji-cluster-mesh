@@ -1,6 +1,8 @@
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: Cluster
 metadata:
+  labels:
+    ciliumCNI: enabled
   name: capi-quickstart
   namespace: default
 spec:
