@@ -12,33 +12,23 @@ spec:
   chartName: cilium
   namespace: kube-system
   valuesTemplate: |
+    hubble:
+      enabled: true
+      relay:
+        enabled: true
+      ui:
+        enabled: true
     ipam:
       mode: "cluster-pool"
       operator:
         clusterPoolIPv4PodCIDRList:{{range $i, $cidr := .Cluster.spec.clusterNetwork.pods.cidrBlocks }}
           - {{ $cidr }}{{end}}
+    cluster:
+      name: {{ .Cluster.metadata.name }}
+      id: {{ (atoi .Cluster.metadata.annotations.clusterID) }}
+    clustermesh:
+      useAPIServer: true
     operator:
       replicas: 1
       rollOutPods: true
     rollOutCiliumPods: true
-    securityContext:
-      privileged: true
-      capabilities:
-        ciliumAgent:
-          - PERFMON
-          - BPF
-          - CHOWN
-          - KILL
-          - NET_ADMIN
-          - NET_RAW
-          - IPC_LOCK
-          - SYS_ADMIN
-          - SYS_RESOURCE
-          - DAC_OVERRIDE
-          - FOWNER
-          - SETGID
-          - SETUI
-        cleanCiliumState:
-          - NET_ADMIN
-          - SYS_ADMIN
-          - SYS_RESOURCE

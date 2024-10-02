@@ -3,43 +3,43 @@ kind: Cluster
 metadata:
   labels:
     ciliumCNI: enabled
-  name: tenant-0-kubevirt
+  annotations:
+    clusterID: "2"
+  name: tenant-2-kubevirt
 spec:
   clusterNetwork:
     pods:
       cidrBlocks:
-        - 10.243.0.0/16
+        - 11.243.0.0/16
     services:
       cidrBlocks:
-        - 10.95.0.0/16
+        - 11.95.0.0/16
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/v1alpha1
     kind: KamajiControlPlane
-    name: tenant-0-kubevirt
-    # namespace: tenant-system
+    name: tenant-2-kubevirt
   infrastructureRef:
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
     kind: KubevirtCluster
-    name: tenant-0-kubevirt
-    # namespace: tenant-system
+    name: tenant-2-kubevirt
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: KubevirtCluster
 metadata:
   annotations:
     cluster.x-k8s.io/managed-by: kamaji
-  name: tenant-0-kubevirt
+  name: tenant-2-kubevirt
 ---
 apiVersion: controlplane.cluster.x-k8s.io/v1alpha1
 kind: KamajiControlPlane
 metadata:
-  name: tenant-0-kubevirt
+  name: tenant-2-kubevirt
 spec:
   dataStoreName: default
   addons:
     coreDNS:
       dnsServiceIPs:
-        - 10.95.0.10
+        - 11.95.0.10
     kubeProxy: {}
   kubelet:
     cgroupfs: systemd
@@ -55,15 +55,13 @@ spec:
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: KubevirtMachineTemplate
 metadata:
-  name: tenant-0-kubevirt-md-0
+  name: tenant-2-kubevirt-md-0
 spec:
   template:
     spec:
       virtualMachineBootstrapCheck:
         checkStrategy: ssh
       virtualMachineTemplate:
-        # metadata:
-        # namespace: tenant-system
         spec:
           runStrategy: Always
           template:
@@ -78,7 +76,7 @@ spec:
                       name: containervolume
                   networkInterfaceMultiqueue: true
                 memory:
-                  guest: 4Gi
+                  guest: 2Gi
               evictionStrategy: External
               volumes:
                 - containerDisk:
@@ -88,7 +86,7 @@ spec:
 apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: KubeadmConfigTemplate
 metadata:
-  name: tenant-0-kubevirt-md-0
+  name: tenant-2-kubevirt-md-0
 spec:
   template:
     spec:
@@ -99,10 +97,10 @@ spec:
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachineDeployment
 metadata:
-  name: tenant-0-kubevirt-md-0
+  name: tenant-2-kubevirt-md-0
 spec:
-  clusterName: tenant-0-kubevirt
-  replicas: 3
+  clusterName: tenant-2-kubevirt
+  replicas: 2
   selector:
     matchLabels: null
   template:
@@ -111,12 +109,10 @@ spec:
         configRef:
           apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
           kind: KubeadmConfigTemplate
-          name: tenant-0-kubevirt-md-0
-          # namespace: tenant-system
-      clusterName: tenant-0-kubevirt
+          name: tenant-2-kubevirt-md-0
+      clusterName: tenant-2-kubevirt
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
         kind: KubevirtMachineTemplate
-        name: tenant-0-kubevirt-md-0
-        # namespace: tenant-system
+        name: tenant-2-kubevirt-md-0
       version: v1.30.1
