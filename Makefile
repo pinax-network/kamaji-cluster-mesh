@@ -2,7 +2,7 @@
 
 ## Setup the kind cluster
 setup:
-	./test/kind-cluster.sh
+	./scripts/kind-cluster.sh
 
 ## Bootstrap a management cluster with Cilium CNI and FluxCD
 up: 
@@ -14,7 +14,7 @@ down:
 
 ## Nuke the kind cluster
 nuke: 
-	./test/kind-teardown.sh
+	./scripts/kind-teardown.sh
 
 # From: https://gist.github.com/klmr/575726c7e05d8780505a
 help:

@@ -27,8 +27,8 @@ local_resource(
 
 local_resource(
     'flux',
-    cmd='./test/flux-bootstrap.sh',
+    cmd='./scripts/flux-bootstrap.sh',
     resource_deps=['lb_crds'],
-    deps=['./test/flux-bootstrap.sh'],
+    deps=['./scripts/flux-bootstrap.sh'],
     env={'GITHUB_TOKEN': os.getenv('GITHUB_TOKEN', '')}
 )

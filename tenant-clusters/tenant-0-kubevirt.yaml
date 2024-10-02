@@ -3,8 +3,7 @@ kind: Cluster
 metadata:
   labels:
     ciliumCNI: enabled
-  name: capi-quickstart
-  namespace: default
+  name: tenant-0-kubevirt
 spec:
   clusterNetwork:
     pods:
@@ -16,27 +15,25 @@ spec:
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/v1alpha1
     kind: KamajiControlPlane
-    name: capi-quickstart-kubevirt
-    namespace: default
+    name: tenant-0-kubevirt
+    # namespace: tenant-system
   infrastructureRef:
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
     kind: KubevirtCluster
-    name: capi-quickstart
-    namespace: default
+    name: tenant-0-kubevirt
+    # namespace: tenant-system
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: KubevirtCluster
 metadata:
   annotations:
     cluster.x-k8s.io/managed-by: kamaji
-  name: capi-quickstart
-  namespace: default
+  name: tenant-0-kubevirt
 ---
 apiVersion: controlplane.cluster.x-k8s.io/v1alpha1
 kind: KamajiControlPlane
 metadata:
-  name: capi-quickstart-kubevirt
-  namespace: default
+  name: tenant-0-kubevirt
 spec:
   dataStoreName: default
   addons:
@@ -58,16 +55,15 @@ spec:
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: KubevirtMachineTemplate
 metadata:
-  name: capi-quickstart-md-0
-  namespace: default
+  name: tenant-0-kubevirt-md-0
 spec:
   template:
     spec:
       virtualMachineBootstrapCheck:
         checkStrategy: ssh
       virtualMachineTemplate:
-        metadata:
-          namespace: default
+        # metadata:
+        # namespace: tenant-system
         spec:
           runStrategy: Always
           template:
@@ -92,8 +88,7 @@ spec:
 apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: KubeadmConfigTemplate
 metadata:
-  name: capi-quickstart-md-0
-  namespace: default
+  name: tenant-0-kubevirt-md-0
 spec:
   template:
     spec:
@@ -104,10 +99,9 @@ spec:
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachineDeployment
 metadata:
-  name: capi-quickstart-md-0
-  namespace: default
+  name: tenant-0-kubevirt-md-0
 spec:
-  clusterName: capi-quickstart
+  clusterName: tenant-0-kubevirt
   replicas: 3
   selector:
     matchLabels: null
@@ -117,12 +111,12 @@ spec:
         configRef:
           apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
           kind: KubeadmConfigTemplate
-          name: capi-quickstart-md-0
-          namespace: default
-      clusterName: capi-quickstart
+          name: tenant-0-kubevirt-md-0
+          # namespace: tenant-system
+      clusterName: tenant-0-kubevirt
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
         kind: KubevirtMachineTemplate
-        name: capi-quickstart-md-0
-        namespace: default
+        name: tenant-0-kubevirt-md-0
+        # namespace: tenant-system
       version: v1.30.1

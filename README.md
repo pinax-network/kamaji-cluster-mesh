@@ -53,7 +53,7 @@ person running the command to be the owner of the GitHub repository, or
 to have admin rights of a GitHub organization.
 
 If you don't have the required access permission to this repo, you will have to
-change the [flux bootstrap script](test/flux-bootstrap.sh) to use your
+change the [flux bootstrap script](scripts/flux-bootstrap.sh) to use your
 own GitHub Repo instead.
 
 For accessing the GitHub API, the bootstrap command requires a GitHub personal
@@ -66,7 +66,7 @@ export GITHUB_TOKEN=<gh-token>
 ```
 
 Alternatively, you can use `sops` to encrypt a GitHub PAT token
-in this repo and point the [flux bootstrap script](test/flux-bootstrap.sh)
+in this repo and point the [flux bootstrap script](scripts/flux-bootstrap.sh)
 to it. If the `GITHUB_TOKEN` variable is not set, the bootstrap script
 will try to decrypt the secret using sops automatically.
 
@@ -87,10 +87,25 @@ make up
 
 Once the management cluster is up and ready, you can create workloads clusters
 with `kamaji` and the `kubevirt` by leveraging the `cluster-api-operator`. Workload
-clusters are located in the `test/workload-clusters` directory.
+clusters are located in the `tenant-clusters` directory.
 
 To bootstrap the quickstart-cluster on the management cluster run:
 
 ```bash
-kubectl apply -f ./test/workload-clusters/quickstart-cluster.yaml
+kubectl apply -k ./tenant-clusters
+```
+
+Once the tenant cluster is deployed, you can obtain its kubeconfig with this command:
+
+```bash
+kubectl -n tenant-system get secrets tenant-0-kubevirt-admin-kubeconfig -o json \
+      | jq -r '.data["admin.conf"]' \
+      | base64 --decode \
+      > tenant-0.kubeconfig
+```
+
+You can then use the following `kubeconfig` to interact with the tenant-cluster.
+
+```bash
+kubectl --kubeconfig=tenant-0.kubeconfig -n kube-system get pods
 ```
