@@ -28,7 +28,17 @@ spec:
       id: {{ (atoi .Cluster.metadata.annotations.clusterID) }}
     clustermesh:
       useAPIServer: true
+      apiserver:
+        kvstoremesh:
+          enabled: false
+        service:
+          type: NodePort
+          nodePort: {{ add 32000 (atoi .Cluster.metadata.annotations.clusterID) }}
     operator:
       replicas: 1
       rollOutPods: true
     rollOutCiliumPods: true
+    kubeProxyReplacement: true
+    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+    k8sServiceHost: {{ .Cluster.spec.controlPlaneEndpoint.host }}
+    k8sServicePort: {{ .Cluster.spec.controlPlaneEndpoint.port }}

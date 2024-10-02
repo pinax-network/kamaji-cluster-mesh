@@ -13,6 +13,11 @@ nodes:
   extraMounts:
    - containerPath: /var/lib/kubelet/config.json
      hostPath: $HOME/.docker/config.json
+  extraPortMappings:
+    - containerPort: 32001
+      hostPort: 32001
+    - containerPort: 32002
+      hostPort: 32002
 networking:
   disableDefaultCNI: true
   kubeProxyMode: "none"

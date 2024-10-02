@@ -10,10 +10,10 @@ spec:
   clusterNetwork:
     pods:
       cidrBlocks:
-        - 11.243.0.0/16
+        - 10.2.0.0/16
     services:
       cidrBlocks:
-        - 11.95.0.0/16
+        - 172.18.2.0/24
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/v1alpha1
     kind: KamajiControlPlane
@@ -39,8 +39,7 @@ spec:
   addons:
     coreDNS:
       dnsServiceIPs:
-        - 11.95.0.10
-    kubeProxy: {}
+        - 172.18.2.10
   kubelet:
     cgroupfs: systemd
     preferredAddressTypes:
