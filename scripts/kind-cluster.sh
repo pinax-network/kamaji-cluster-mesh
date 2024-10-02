@@ -20,5 +20,7 @@ nodes:
       hostPort: 32002
 networking:
   disableDefaultCNI: true
+  podSubnet: 10.100.0.0/16
+  serviceSubnet: 172.18.100.0/24
   kubeProxyMode: "none"
 EOF

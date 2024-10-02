@@ -30,7 +30,7 @@ spec:
       useAPIServer: true
       apiserver:
         kvstoremesh:
-          enabled: false
+          enabled: true
         service:
           type: NodePort
           nodePort: {{ add 32000 (atoi .Cluster.metadata.annotations.clusterID) }}
