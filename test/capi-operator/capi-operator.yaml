@@ -41,7 +41,7 @@ spec:
   values:
     core: capi-system:cluster-api:v1.8.3
     bootstrap: capi-kubeadm-bootstrap-system:kubeadm:v1.8.3
-    controlPlane: capi-kamaji-control-plane-system:kamaji:v0.11.0
+    controlPlane: capi-kamaji-control-plane-system:kamaji:v0.11.0;capi-kubeadm-control-plane-system:kubeadm:v1.8.3
     infrastructure: capk-system:kubevirt:v0.1.9
     addon: "helm-addon-system:helm:v0.2.5"
     manager:

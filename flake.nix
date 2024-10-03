@@ -22,6 +22,8 @@
             kubectl
             kubernetes-helm
             kubevirt
+            sops
+            ssh-to-age
             tilt
             yq
           ];

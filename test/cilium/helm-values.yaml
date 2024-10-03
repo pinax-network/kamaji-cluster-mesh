@@ -1,12 +1,7 @@
-bpf:
-  masquerade: true
 cluster:
   name: local
 containerRuntime:
   integration: containerd
-endpointRoutes:
-  enabled: true
-enableCiliumEndpointSlice: true
 ingressController:
   enabled: true
   loadBalancerMode: shared
@@ -16,19 +11,13 @@ l7Proxy: true
 l2announcements:
   enabled: true
 ipam:
-  mode: "cluster-pool"
-  operator:
-    clusterPoolIPv4PodCIDRList:
-      - "10.100.0.0/16"
-    clusterPoolIPv4MaskSize: 24
-    # clusterPoolIPv6PodCIDRList:
-    #   - "fd00::/104"
-    # clusterPoolIPv6MaskSize: 120
+  mode: "kubernetes"
+
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 k8sServiceHost: 127.0.0.1
 k8sServicePort: 6443
-localRedirectPolicy: true
+
 operator:
   replicas: 1
   rollOutPods: true
@@ -54,4 +43,3 @@ securityContext:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
-tunnel: disabled
